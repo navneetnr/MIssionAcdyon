@@ -1,7 +1,7 @@
 // Base URL comes from the environment so production builds never hardcode
 // localhost. Set VITE_API_URL in .env (see .env.example) or in your hosting
 // provider's dashboard when deploying.
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL || "https://missionacdyon.onrender.com";
 
 async function request(path, options) {
   const res = await fetch(`${API_URL}${path}`, options);

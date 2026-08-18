@@ -205,7 +205,7 @@ once the backend is running.
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `VITE_API_URL` | `http://localhost:8000` | backend base URL used by every fetch call |
+| `VITE_API_URL` | `https://missionacdyon.onrender.com` | backend base URL used by every fetch call |
 
 No secrets are required anywhere in this project — the Remotive API is
 public and unauthenticated. Nothing sensitive is committed; `.env` files are
