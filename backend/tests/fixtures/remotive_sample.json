@@ -1,0 +1,48 @@
+{
+  "job-count": 3,
+  "total-job-count": 3,
+  "jobs": [
+    {
+      "id": 1001,
+      "title": "Backend Engineer (Python)",
+      "company_name": "Acme Remote Co",
+      "company_logo": "https://example.com/logo1.png",
+      "category": "Software Development",
+      "tags": ["python", "fastapi", "sqlite"],
+      "job_type": "full_time",
+      "publication_date": "2026-08-01T12:00:00",
+      "candidate_required_location": "Worldwide",
+      "salary": "$70,000 - $90,000",
+      "url": "https://remotive.com/remote-jobs/software-dev/backend-engineer-1001",
+      "description": "Build and maintain backend services."
+    },
+    {
+      "id": 1002,
+      "title": "Frontend Engineer (React)",
+      "company_name": "Northwind Labs",
+      "company_logo": "https://example.com/logo2.png",
+      "category": "Software Development",
+      "tags": ["react", "vite", "javascript"],
+      "job_type": "full_time",
+      "publication_date": "2026-08-02T09:30:00",
+      "candidate_required_location": "USA",
+      "salary": "",
+      "url": "https://remotive.com/remote-jobs/software-dev/frontend-engineer-1002",
+      "description": "Build responsive UI with React and Vite."
+    },
+    {
+      "id": 1003,
+      "title": "",
+      "company_name": "Ghost Corp",
+      "company_logo": null,
+      "category": "Software Development",
+      "tags": [],
+      "job_type": "contract",
+      "publication_date": "2026-08-03T00:00:00",
+      "candidate_required_location": "",
+      "salary": "",
+      "url": "https://remotive.com/remote-jobs/software-dev/ghost-1003",
+      "description": "This record is intentionally invalid - missing title."
+    }
+  ]
+}

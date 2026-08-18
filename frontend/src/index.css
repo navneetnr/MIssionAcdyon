@@ -1,0 +1,457 @@
+/* ============================================================
+   Design tokens
+   Concept: a job listing as a boarding pass / ticket stub.
+   The masthead reads like a departures board; each job card is
+   a torn ticket with a perforated seam between the "listing"
+   half and the "stub" (source, type, posted date).
+   ============================================================ */
+:root {
+  --paper: #f1f3ee;        /* page background - pale sage-white, not cream */
+  --card: #ffffff;
+  --board: #12202b;        /* masthead / departure-board navy */
+  --board-line: #24384a;
+  --ink: #1b2430;          /* primary text */
+  --ink-soft: #5b6472;     /* secondary text */
+  --line: #ccd0c2;         /* hairlines, perforation */
+  --mustard: #c9861f;      /* primary accent - ticket ochre */
+  --mustard-tint: #f6e8d0;
+  --brick: #b23a48;        /* status / rejected / error accent */
+  --teal: #0f6b66;         /* tag / link accent */
+
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  --radius: 10px;
+  --max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--mustard);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   Masthead
+   ============================================================ */
+.masthead {
+  background: var(--board);
+  color: #eef1ec;
+  border-bottom: 3px solid var(--mustard);
+}
+
+.masthead__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 28px 20px 22px;
+}
+
+.masthead__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  margin: 0 0 6px;
+}
+
+.masthead__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(28px, 6vw, 44px);
+  margin: 0 0 4px;
+  line-height: 1.05;
+}
+
+.masthead__subtitle {
+  color: #b7c0c9;
+  font-size: 14px;
+  margin: 0 0 20px;
+  max-width: 60ch;
+}
+
+.board-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: #cfd6da;
+  border-top: 1px dashed #3a4d5c;
+  padding-top: 12px;
+}
+
+.board-status strong {
+  color: #eef1ec;
+  font-weight: 500;
+}
+
+.board-status .dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.dot--ok { background: #4caf6d; }
+.dot--warn { background: var(--mustard); }
+.dot--err { background: var(--brick); }
+
+/* ============================================================
+   Controls (search + filters, styled like a ticket counter)
+   ============================================================ */
+.controls {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 18px 20px 0;
+  width: 100%;
+}
+
+.controls__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+
+.controls input[type="text"],
+.controls select {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.controls input[type="text"] {
+  flex: 1 1 220px;
+}
+
+.controls select {
+  flex: 1 1 140px;
+}
+
+.controls__search-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.controls__meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 10px 2px 0;
+}
+
+/* ============================================================
+   Job grid + ticket cards
+   ============================================================ */
+.job-grid {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+  flex: 1;
+  width: 100%;
+}
+
+@media (min-width: 1180px) {
+  .job-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.job-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: grid;
+  grid-template-columns: 1fr 96px;
+  min-height: 190px;
+  box-shadow: 0 1px 2px rgba(27, 36, 48, 0.04);
+}
+
+.job-card__main {
+  padding: 16px 16px 14px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.job-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.job-card__company {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+
+.job-card__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.job-card__meta-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.job-card__description {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin: 0 0 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.job-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.job-card__tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--teal);
+  background: #e6f1f0;
+  border-radius: 4px;
+  padding: 3px 6px;
+  text-transform: lowercase;
+}
+
+.job-card__link {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  border-bottom: 1px solid var(--mustard);
+  padding-bottom: 1px;
+}
+
+.job-card__link:hover {
+  color: var(--mustard);
+}
+
+/* the stub: perforated seam + rotated source label */
+.job-card__stub {
+  position: relative;
+  background: var(--mustard-tint);
+  border-left: 2px dashed #d8bf8e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 6px;
+}
+
+.job-card__stub::before,
+.job-card__stub::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+.job-card__stub::before { top: -9px; }
+.job-card__stub::after { bottom: -9px; }
+
+.job-card__source {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.job-card__stub-code {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--ink-soft);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* mobile: stub becomes a horizontal footer strip */
+@media (max-width: 560px) {
+  .job-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+  .job-card__stub {
+    flex-direction: row;
+    border-left: none;
+    border-top: 2px dashed #d8bf8e;
+    padding: 8px 14px;
+    justify-content: space-between;
+  }
+  .job-card__stub::before,
+  .job-card__stub::after {
+    left: auto;
+    top: -8px;
+  }
+  .job-card__stub::before { left: -9px; }
+  .job-card__stub::after { right: -9px; }
+  .job-card__source,
+  .job-card__stub-code {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Status states (loading / empty / error)
+   ============================================================ */
+.status-panel {
+  max-width: var(--max-width);
+  margin: 40px auto;
+  padding: 0 20px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.status-panel__code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  margin-bottom: 8px;
+}
+
+.status-panel__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--ink);
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.status-panel__body {
+  font-size: 14px;
+  max-width: 46ch;
+  margin: 0 auto;
+}
+
+.status-panel--error .status-panel__code {
+  color: var(--brick);
+}
+
+.skeleton-grid {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.skeleton-card {
+  height: 190px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, #e9ebe4 25%, #f4f5f0 37%, #e9ebe4 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border: 1px solid var(--line);
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 16px 20px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}

@@ -1,0 +1,4 @@
+# Minimal deps to run the standalone ingestion scripts at the repo root
+# (fetch_jobs.py, demo_parse.py) without installing the full backend stack.
+# For the FastAPI backend + tests, use backend/requirements.txt instead.
+requests==2.32.3
