@@ -18,6 +18,7 @@ import os
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 
 from . import _pathfix  # noqa: F401  (must run before ingestion/database imports)
 from .database import connect, get_jobs, get_job, count_jobs, init_db, DEFAULT_DB_PATH
@@ -36,7 +37,13 @@ DB_PATH = os.environ.get("DATABASE_PATH", DEFAULT_DB_PATH)
 _origins_env = os.environ.get("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
 ALLOWED_ORIGINS = [o.strip() for o in _origins_env.split(",") if o.strip()]
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    run_ingestion(DB_PATH, limit=50)
+    yield
+
 app = FastAPI(
+    lifespan=lifespan,
     title="ACDYON Job Aggregator API",
     description="Ingests, normalizes, and serves job listings from the public Remotive API.",
     version="1.0.0",
