@@ -39,7 +39,15 @@ ALLOWED_ORIGINS = [o.strip() for o in _origins_env.split(",") if o.strip()]
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    run_ingestion(DB_PATH, limit=50)
+    init_db(DB_PATH)
+    logger.info("Database ready at %s", DB_PATH)
+
+    try:
+        run_ingestion(DB_PATH, limit=50)
+        logger.info("Initial ingestion completed")
+    except Exception as e:
+        logger.exception("Initial ingestion failed: %s", e)
+
     yield
 
 app = FastAPI(
@@ -58,10 +66,7 @@ app.add_middleware(
 )
 
 
-@app.on_event("startup")
-def on_startup():
-    init_db(DB_PATH)
-    logger.info("Database ready at %s", DB_PATH)
+
 
 
 @app.get("/health", response_model=HealthResponse)
